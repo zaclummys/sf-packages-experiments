@@ -4,49 +4,41 @@ This repository is structured for package oriented Salesforce development using 
 
 ## Bounded Contexts
 
-- core
-- catalog-management
-- reservation-management
-- billing-management
+| Package | Type | Dependencies |
+|---------|------|-------------|
+| core | Unlocked | — |
+| catalog-management | Unlocked | core |
+| reservation-management | Unlocked | core, catalog-management |
+| billing-management | Unlocked | core, reservation-management |
+| notification-management | Unlocked (org-dependent) | — |
 
-## Dependency Order
+## Folder Layout
 
-1. core
-2. catalog-management
-3. reservation-management
-4. billing-management
-
-## Local Folder Layout
-
-- packages/core
-- packages/catalog-management
-- packages/reservation-management
-- packages/billing-management
-
-## Create Package Records In Dev Hub
-
-Run these once in your Dev Hub org:
-
-```bash
-sf package create --name core --package-type Unlocked --path packages/core --target-dev-hub <DEV_HUB_ALIAS>
-sf package create --name catalog-management --package-type Unlocked --path packages/catalog-management --target-dev-hub <DEV_HUB_ALIAS>
-sf package create --name reservation-management --package-type Unlocked --path packages/reservation-management --target-dev-hub <DEV_HUB_ALIAS>
-sf package create --name billing-management --package-type Unlocked --path packages/billing-management --target-dev-hub <DEV_HUB_ALIAS>
+```
+packages/
+  core/classes/
+  catalog-management/classes/
+  reservation-management/classes/
+  billing-management/classes/
+  notification-management/classes/
+scripts/
+  deploy-all-packages.sh
 ```
 
-After creation, replace placeholder values in sfdx-project.json packageAliases with real package IDs.
+## Deploy All Packages
 
-## Create Package Versions
-
-Create versions following dependency order:
+Creates, installs, and promotes all package versions in dependency order:
 
 ```bash
-sf package version create --package core --installation-key-bypass --wait 30 --target-dev-hub <DEV_HUB_ALIAS>
-sf package version create --package catalog-management --installation-key-bypass --wait 30 --target-dev-hub <DEV_HUB_ALIAS>
-sf package version create --package reservation-management --installation-key-bypass --wait 30 --target-dev-hub <DEV_HUB_ALIAS>
-sf package version create --package billing-management --installation-key-bypass --wait 30 --target-dev-hub <DEV_HUB_ALIAS>
+./scripts/deploy-all-packages.sh <dev-hub> <target-org>
 ```
 
-## Suggested Next Step
+## Create Package Records (one-time setup)
 
-Move legacy metadata into package folders by bounded context ownership.
+```bash
+sf package create --name core --package-type Unlocked --path packages/core --target-dev-hub <DEV_HUB>
+sf package create --name catalog-management --package-type Unlocked --path packages/catalog-management --target-dev-hub <DEV_HUB>
+sf package create --name reservation-management --package-type Unlocked --path packages/reservation-management --target-dev-hub <DEV_HUB>
+sf package create --name billing-management --package-type Unlocked --path packages/billing-management --target-dev-hub <DEV_HUB>
+sf package create --name notification-management --package-type Unlocked --path packages/notification-management --target-dev-hub <DEV_HUB>
+```
