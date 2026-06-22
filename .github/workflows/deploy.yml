@@ -25,10 +25,16 @@ jobs:
       - name: Auth Dev Hub
         run: echo "${{ secrets.DEV_HUB_SFDX_AUTH_URL }}" | sf org login sfdx-url --alias dev-hub --set-default-dev-hub --sfdx-url-stdin
 
+      - name: Get Package ID
+        id: pkg
+        run: |
+          PACKAGE_ID=$(sf package list --json | jq -r '.result[] | select(.Name == "${{ matrix.package }}") | .Id')
+          echo "id=$PACKAGE_ID" >> "$GITHUB_OUTPUT"
+
       - name: Create Package Version
         id: create
         run: |
-          PACKAGE_CREATE_JSON=$(sf package version create --package "${{ matrix.package }}" --installation-key-bypass --code-coverage --wait 30 --json || true)
+          PACKAGE_CREATE_JSON=$(sf package version create --package "${{ steps.pkg.outputs.id }}" --installation-key-bypass --code-coverage --wait 30 --json || true)
 
           PACKAGE_CREATE_VERSION=$(echo "$PACKAGE_CREATE_JSON" | jq -r '.result.SubscriberPackageVersionId')
 
