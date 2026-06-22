@@ -41,6 +41,12 @@
           "subscriberPackageVersionId": "04tbm000000Vt1pAAC"
         }
       ]
+    },
+    {
+      "versionNumber": "1.0.0.NEXT",
+      "path": "packages/notification-management",
+      "package": "notification-management",
+      "orgDependent": true
     }
   ],
   "packageAliases": {
@@ -48,11 +54,6 @@
     "catalog-management": "0Hobm00000045txCAA",
     "reservation-management": "0Hobm00000045vZCAQ",
     "billing-management": "0Hobm00000045xBCAQ",
-    "core@1.0.0-1": "04tbm000000VtD7AAK",
-    "catalog-management@1.0.0-1": "04tbm000000VtEjAAK",
-    "reservation-management@1.0.0-1": "04tbm000000VtGLAA0",
-    "billing-management@1.0.0-1": "04tbm000000VtHxAAK",
-    "core@1.0.0-6": "04tbm000000VtQ1AAK",
-    "catalog-management@1.0.0-2": "04tbm000000VtRdAAK"
+    "notification-management": "0Hobm00000045ynCAA"
   }
 }
