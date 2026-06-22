@@ -34,7 +34,16 @@ jobs:
       - name: Create package version
         id: create
         run: |
-          PACKAGE_CREATE_VERSION=$(sf package version create --package "${{ matrix.package }}" --installation-key-bypass --code-coverage --wait 30 --json | jq -re '.result.SubscriberPackageVersionId')
+          PACKAGE_CREATE_JSON=$(sf package version create --package "${{ matrix.package }}" --installation-key-bypass --code-coverage --wait 30 --json)
+
+          PACKAGE_CREATE_VERSION=$(echo "$PACKAGE_CREATE_JSON" | jq -re '.result.SubscriberPackageVersionId')
+
+          if [ -z "$PACKAGE_CREATE_VERSION" ]; then
+            echo "Error: Failed to create package version."
+            echo "Response: $PACKAGE_CREATE_JSON"
+            exit 1
+          fi
+          
           echo "version=$PACKAGE_CREATE_VERSION" >> "$GITHUB_OUTPUT"
 
       - name: Install in QA
