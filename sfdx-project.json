@@ -1,13 +1,13 @@
 {
   "packageDirectories": [
     {
-      "versionNumber": "1.0.0.NEXT",
+      "versionNumber": "1.1.0.NEXT",
       "path": "packages/core",
       "default": true,
       "package": "core"
     },
     {
-      "versionNumber": "1.0.0.NEXT",
+      "versionNumber": "1.1.0.NEXT",
       "path": "packages/catalog-management",
       "package": "catalog-management",
       "dependencies": [
@@ -17,7 +17,7 @@
       ]
     },
     {
-      "versionNumber": "1.0.0.NEXT",
+      "versionNumber": "1.1.0.NEXT",
       "path": "packages/reservation-management",
       "package": "reservation-management",
       "dependencies": [
@@ -30,7 +30,7 @@
       ]
     },
     {
-      "versionNumber": "1.0.0.NEXT",
+      "versionNumber": "1.1.0.NEXT",
       "path": "packages/billing-management",
       "package": "billing-management",
       "dependencies": [
@@ -43,7 +43,7 @@
       ]
     },
     {
-      "versionNumber": "1.0.0.NEXT",
+      "versionNumber": "1.1.0.NEXT",
       "path": "packages/notification-management",
       "package": "notification-management",
       "orgDependent": true

@@ -34,7 +34,7 @@ jobs:
       - name: Create package version
         id: create
         run: |
-          PACKAGE_CREATE_JSON=$(sf package version create --package "${{ matrix.package }}" --installation-key-bypass --code-coverage --wait 30 --json || true)
+          PACKAGE_CREATE_JSON=$(sf package version create --package "${{ matrix.package }}" --installation-key-bypass --code-coverage --wait 30 --version-number "1.0.${{ github.run_number }}.NEXT" --json || true)
 
           PACKAGE_CREATE_VERSION=$(echo "$PACKAGE_CREATE_JSON" | jq -r '.result.SubscriberPackageVersionId')
 
