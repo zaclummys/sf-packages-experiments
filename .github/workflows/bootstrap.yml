@@ -1,0 +1,28 @@
+name: Bootstrap
+
+on:
+  workflow_dispatch:
+
+jobs:
+  bootstrap:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 1
+      matrix:
+        package:
+          - core
+          - catalog-management
+          - reservation-management
+          - billing-management
+          - notification-management
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Salesforce CLI
+        run: npm install -g @salesforce/cli
+
+      - name: Auth Dev Hub
+        run: echo "${{ secrets.DEV_HUB_SFDX_AUTH_URL }}" | sf org login sfdx-url --alias dev-hub --set-default-dev-hub --sfdx-url-stdin
+
+      - name: Create Package
+        run: sf package create --name "${{ matrix.package }}" --package-type Unlocked --path "packages/${{ matrix.package }}"
