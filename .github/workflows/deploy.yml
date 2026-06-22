@@ -23,13 +23,13 @@ jobs:
         run: npm install -g @salesforce/cli
 
       - name: Auth Dev Hub
-        run: echo "${{ secrets.DEV_HUB_SFDX_AUTH_URL }}" | sf org login sfdx-url --sfdx-url-stdin --alias dev-hub --set-default-dev-hub
+        run: echo "${{ secrets.DEV_HUB_SFDX_AUTH_URL }}" | sf org login sfdx-url --alias dev-hub --set-default-dev-hub --sfdx-url-stdin
 
       - name: Auth QA
-        run: echo "${{ secrets.QA_SFDX_AUTH_URL }}" | sf org login sfdx-url --sfdx-url-stdin --alias qa
+        run: echo "${{ secrets.QA_SFDX_AUTH_URL }}" | sf org login sfdx-url --alias qa --sfdx-url-stdin
 
       - name: Auth Production
-        run: echo "${{ secrets.PRODUCTION_SFDX_AUTH_URL }}" | sf org login sfdx-url --sfdx-url-stdin --alias production
+        run: echo "${{ secrets.PRODUCTION_SFDX_AUTH_URL }}" | sf org login sfdx-url --alias production --sfdx-url-stdin
 
       - name: Create package version
         id: create
