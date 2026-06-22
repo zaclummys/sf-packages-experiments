@@ -25,12 +25,6 @@ jobs:
       - name: Auth Dev Hub
         run: echo "${{ secrets.DEV_HUB_SFDX_AUTH_URL }}" | sf org login sfdx-url --alias dev-hub --set-default-dev-hub --sfdx-url-stdin
 
-      - name: Auth QA
-        run: echo "${{ secrets.QA_SFDX_AUTH_URL }}" | sf org login sfdx-url --alias qa --sfdx-url-stdin
-
-      - name: Auth Production
-        run: echo "${{ secrets.PRODUCTION_SFDX_AUTH_URL }}" | sf org login sfdx-url --alias production --sfdx-url-stdin
-
       - name: Create package version
         id: create
         run: |
@@ -46,11 +40,17 @@ jobs:
 
           echo "version=$PACKAGE_CREATE_VERSION" >> "$GITHUB_OUTPUT"
 
+      - name: Auth QA
+        run: echo "${{ secrets.QA_SFDX_AUTH_URL }}" | sf org login sfdx-url --alias qa --sfdx-url-stdin
+
       - name: Install in QA
         run: sf package install --package "${{ steps.create.outputs.version }}" --target-org qa --wait 20 --publish-wait 10
-
+        
       - name: Promote
         run: sf package version promote --package "${{ steps.create.outputs.version }}" --no-prompt
+        
+      - name: Auth Production
+        run: echo "${{ secrets.PRODUCTION_SFDX_AUTH_URL }}" | sf org login sfdx-url --alias production --sfdx-url-stdin
 
       - name: Install in Production
         run: sf package install --package "${{ steps.create.outputs.version }}" --target-org production --wait 20 --publish-wait 10
