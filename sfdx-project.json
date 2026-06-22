@@ -12,7 +12,7 @@
       "package": "catalog-management",
       "dependencies": [
         {
-          "subscriberPackageVersionId": "04tbm000000Vss9AAC"
+          "package": "core"
         }
       ]
     },
@@ -22,10 +22,10 @@
       "package": "reservation-management",
       "dependencies": [
         {
-          "subscriberPackageVersionId": "04tbm000000Vss9AAC"
+          "package": "core"
         },
         {
-          "subscriberPackageVersionId": "04tbm000000VsvNAAS"
+          "package": "catalog-management"
         }
       ]
     },
@@ -35,10 +35,10 @@
       "package": "billing-management",
       "dependencies": [
         {
-          "subscriberPackageVersionId": "04tbm000000Vss9AAC"
+          "package": "core"
         },
         {
-          "subscriberPackageVersionId": "04tbm000000Vt1pAAC"
+          "package": "reservation-management"
         }
       ]
     },
