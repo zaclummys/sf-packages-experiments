@@ -12,7 +12,8 @@
       "package": "catalog-management",
       "dependencies": [
         {
-          "package": "core"
+          "package": "core",
+          "versionNumber": "1.1.0.LATEST"
         }
       ]
     },
@@ -22,10 +23,12 @@
       "package": "reservation-management",
       "dependencies": [
         {
-          "package": "core"
+          "package": "core",
+          "versionNumber": "1.1.0.LATEST"
         },
         {
-          "package": "catalog-management"
+          "package": "catalog-management",
+          "versionNumber": "1.1.0.LATEST"
         }
       ]
     },
@@ -35,10 +38,12 @@
       "package": "billing-management",
       "dependencies": [
         {
-          "package": "core"
+          "package": "core",
+          "versionNumber": "1.1.0.LATEST"
         },
         {
-          "package": "reservation-management"
+          "package": "reservation-management",
+          "versionNumber": "1.1.0.LATEST"
         }
       ]
     },
