@@ -48,5 +48,12 @@
       "package": "notification-management",
       "orgDependent": true
     }
-  ]
+  ],
+  "packageAliases": {
+    "core": "0Hoak0000003QkLCAU",
+    "catalog-management": "0Hoak0000003QlxCAE",
+    "reservation-management": "0Hoak0000003QnZCAU",
+    "billing-management": "0Hoak0000003QpBCAU",
+    "notification-management": "0Hoak0000003QqnCAE"
+  }
 }
