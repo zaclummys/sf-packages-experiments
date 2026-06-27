@@ -14,8 +14,8 @@ jobs:
           - core
           - catalog-management
           - reservation-management
-          - billing-management
-          - notification-management
+          # - billing-management
+          # - notification-management
     steps:
       - uses: actions/checkout@v4
 
