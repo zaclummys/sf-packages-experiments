@@ -5,7 +5,7 @@ on:
     branches: [main]
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 1
@@ -51,8 +51,57 @@ jobs:
       - name: Install in QA
         run: sf package install --package "${{ steps.create.outputs.version }}" --target-org qa --wait 20 --publish-wait 10
 
+      - name: Save Version Id
+        run: |
+          mkdir -p versions
+          echo "${{ steps.create.outputs.version }}" > "versions/${{ matrix.package }}.txt"
+
+      - name: Upload Version Id
+        uses: actions/upload-artifact@v4
+        with:
+          name: version-${{ matrix.package }}
+          path: versions/${{ matrix.package }}.txt
+
+  # Promotes the beta versions built above to Released and installs them in
+  # Production. Gated by the `production` GitHub Environment: configure it
+  # with a required reviewer so this job waits for one manual approval.
+  #
+  # Promoting locks each version's major.minor.patch (e.g. 1.2.0). After a
+  # release, bump versionNumber in sfdx-project.json to the next line so the
+  # next build's beta doesn't collide.
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 20
+
+      - name: Install Salesforce CLI
+        run: npm install -g @salesforce/cli
+
+      - name: Download Version Ids
+        uses: actions/download-artifact@v4
+        with:
+          path: versions
+          pattern: version-*
+          merge-multiple: true
+
+      - name: Auth Dev Hub
+        run: echo "${{ secrets.DEV_HUB_SFDX_AUTH_URL }}" | sf org login sfdx-url --alias dev-hub --set-default-dev-hub --sfdx-url-stdin
+
       - name: Auth Production
         run: echo "${{ secrets.PRODUCTION_SFDX_AUTH_URL }}" | sf org login sfdx-url --alias production --sfdx-url-stdin
 
-      - name: Install in Production
-        run: sf package install --package "${{ steps.create.outputs.version }}" --target-org production --wait 20 --publish-wait 10
+      - name: Promote and Install in Production
+        run: |
+          for package in core catalog-management reservation-management; do
+            VERSION_ID=$(cat "versions/$package.txt")
+            echo "=== Releasing $package ($VERSION_ID) ==="
+            sf package version promote --package "$VERSION_ID" --no-prompt
+            sf package install --package "$VERSION_ID" --target-org production --wait 20 --publish-wait 10
+          done
