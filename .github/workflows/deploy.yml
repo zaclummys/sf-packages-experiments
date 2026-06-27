@@ -50,10 +50,7 @@ jobs:
 
       - name: Install in QA
         run: sf package install --package "${{ steps.create.outputs.version }}" --target-org qa --wait 20 --publish-wait 10
-        
-      - name: Promote Package Version
-        run: sf package version promote --package "${{ steps.create.outputs.version }}" --no-prompt
-        
+
       - name: Auth Production
         run: echo "${{ secrets.PRODUCTION_SFDX_AUTH_URL }}" | sf org login sfdx-url --alias production --sfdx-url-stdin
 
